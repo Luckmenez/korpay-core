@@ -5,7 +5,10 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'https://korpay-6wm9zxds7-luckmenezs-projects.vercel.app',
+    origin: [
+      'https://korpay-6wm9zxds7-luckmenezs-projects.vercel.app',
+      'https://korpay-app.vercel.app',
+    ],
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe());

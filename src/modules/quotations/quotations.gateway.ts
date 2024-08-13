@@ -13,7 +13,7 @@ import { UsersService } from '../users/users.service';
 @UseGuards(WsAuthGuard)
 @WebSocketGateway({
   cors: {
-    origin: `https://korpay-app.vercel.app`, // Permitir conexões de qualquer origem
+    origin: `${process.env.CORS_DOMAIN}`, // Permitir conexões de qualquer origem
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

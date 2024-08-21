@@ -22,7 +22,7 @@ export class UsersService {
         data: {
           ...user,
           password: await bcrypt.hash(user.password, 8),
-          spread: parseFloat('1.0075'),
+          spread: parseFloat('1.00219'),
         },
       });
       return newUser;

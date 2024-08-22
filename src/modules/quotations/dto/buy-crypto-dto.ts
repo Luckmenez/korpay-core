@@ -8,4 +8,8 @@ export class BuyCryptoDto {
   @IsString()
   @IsNotEmpty()
   amount: string;
+
+  @IsString()
+  @IsNotEmpty()
+  d: string;
 }

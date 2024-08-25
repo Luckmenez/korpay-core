@@ -3,6 +3,8 @@ import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
 import { QuotationType } from '../@types/quotations.type';
 import { BuyCryptoDto } from './dto/buy-crypto-dto';
+import { BuyCryptoResponse } from 'src/@types/apiBuyReposponse';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class QuotationService {
@@ -10,7 +12,7 @@ export class QuotationService {
   private readonly userId = process.env.CLIENT_ID;
   private readonly password = process.env.CLIENT_SECRET;
   private lastQuotations: QuotationType | null = null;
-  constructor() {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   @Cron('*/5 * * * * *')
   async getQuotations() {
@@ -39,7 +41,14 @@ export class QuotationService {
     return this.lastQuotations;
   }
 
-  async buyCrypto({ amount, quote_id, d }: BuyCryptoDto) {
+  async buyCrypto({
+    amount,
+    quote_id,
+    d,
+    actual_spread,
+    price,
+    user_id,
+  }: BuyCryptoDto) {
     const authToken = Buffer.from(`${this.userId}:${this.password}`).toString(
       'base64',
     );
@@ -51,8 +60,6 @@ export class QuotationService {
       },
     };
 
-    console.log('buyCrypto', { amount, quote_id, d });
-
     const body = {
       quote_id,
       amount,
@@ -62,11 +69,24 @@ export class QuotationService {
     };
 
     try {
-      const { data } = await axios.post(`${this.url}confirm`, body, config);
+      const { data } = await axios.post<BuyCryptoResponse>(
+        `${this.url}confirm`,
+        body,
+        config,
+      );
+
+      await this.prismaService.order.create({
+        data: {
+          actual_spread: actual_spread,
+          amount: parseFloat(amount),
+          price: parseFloat(price),
+          capitual_id: data.data.order_id,
+          userId: user_id,
+        },
+      });
       return data.data;
     } catch (error) {
-      console.log('Failed to buy crypto:', error);
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw new HttpException(error.response.data, HttpStatus.BAD_REQUEST);
     }
   }
 }

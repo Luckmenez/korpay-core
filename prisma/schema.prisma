@@ -24,4 +24,17 @@ model User {
   name     String
   spread   Float
   role     Role    @default(USER)
+  orders   Order[]
+}
+
+model Order {
+  id                 Int      @id @default(autoincrement())
+  capitual_id        String   @unique
+  actual_spread      Float   
+  amount             Float
+  price              Float   
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  userId             Int
+  user               User     @relation(fields: [userId], references: [id])
 }

@@ -23,6 +23,7 @@ model User {
   password String
   name     String
   spread   Float
+  isActive Boolean @default(false)
   role     Role    @default(USER)
   orders   Order[]
 }

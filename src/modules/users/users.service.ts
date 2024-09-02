@@ -53,7 +53,7 @@ export class UsersService {
     return (await this.getUserById(userId)).spread;
   }
 
-  async updateSpread({ spread, email }) {
+  async updateSpread({ spread, email, isActive }: updateSpreadDTO) {
     const user = await this.prisma.user.update({
       where: {
         email,

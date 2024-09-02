@@ -61,8 +61,24 @@ export class UsersService {
       },
       data: {
         spread: parseFloat(spread),
+        isActive: isActive,
       },
     });
     return user;
+  }
+
+  async getOrders() {
+    return this.prisma.order.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            spread: true,
+          },
+        },
+      },
+    });
   }
 }

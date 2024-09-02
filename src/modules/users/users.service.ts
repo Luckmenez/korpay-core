@@ -2,6 +2,7 @@ import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateUserDTO } from './dto/createUserDTO';
 import * as bcrypt from 'bcrypt';
+import { updateSpreadDTO } from './dto/updateSpreadDTO';
 
 @Injectable()
 export class UsersService {

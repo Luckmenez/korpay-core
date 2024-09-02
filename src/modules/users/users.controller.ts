@@ -4,6 +4,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RoleGuard } from '../auth/role.guard';
+import { updateSpreadDTO } from './dto/updateSpreadDTO';
 
 @Controller('users')
 export class UsersController {
@@ -31,7 +32,7 @@ export class UsersController {
   }
 
   @Post('update-spread')
-  updateSpread(@Body() body: { spread: string; email: string }) {
+  updateSpread(@Body() body: updateSpreadDTO) {
     return this.usersService.updateSpread(body);
   }
 }

@@ -19,6 +19,12 @@ export class UsersController {
     return this.usersService.getUsers();
   }
 
+  @UseGuards(AuthGuard)
+  @Get('orders')
+  getOrders() {
+    return this.usersService.getOrders();
+  }
+
   @Get('user-by-email/:email')
   userByEmail(@Param('email') email: string) {
     return this.usersService.getUserByEmail(email);

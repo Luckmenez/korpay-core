@@ -8,6 +8,12 @@ enum Role {
   USER
   ADMIN
 }
+
+enum Status {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
 generator client {
   provider = "prisma-client-js"
 }
@@ -37,5 +43,6 @@ model Order {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   userId             Int
+  status             Status   @default(PENDING)
   user               User     @relation(fields: [userId], references: [id])
 }

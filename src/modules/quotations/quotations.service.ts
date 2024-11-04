@@ -5,6 +5,7 @@ import { QuotationType } from '../@types/quotations.type';
 import { BuyCryptoDto } from './dto/buy-crypto-dto';
 import { BuyCryptoResponse } from 'src/@types/apiBuyReposponse';
 import { PrismaService } from 'prisma/prisma.service';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Injectable()
 export class QuotationService {
@@ -39,6 +40,17 @@ export class QuotationService {
 
   async getLastQuotations() {
     return this.lastQuotations;
+  }
+
+  async updateStatus({ status, id }: UpdateStatusDto) {
+    return this.prismaService.order.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
   }
 
   async buyCrypto({
